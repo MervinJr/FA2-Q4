@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!--very unfinished, apolocheese-->
+
+    <h1>ORDER FORM</h1>
+
+    <!--1.)-->
+    <form onsubmit="return printReceipt()"> <!--2.)-->
+        <!--a-->
+        <label for="name">Full Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+
+        <!--b-->
+        <label for="sec">Grade & Section [ex. 9-Barium]:</label><br>
+        <input type="text" id="sec" name="sec"><br><br>
+
+        <!--c-->
+        <label for="meal">Meal:</label><br>
+        <select name="meal" id="meal">
+            <option value="chknmeal">Chicken Meal (PHP 75)</option>
+            <option value="porkmeal">Pork Meal (PHP 85)</option>
+            <option value="beefmeal">Beef Meal (PHP 105)</option>
+        </select><br><br>
+
+        <!--f-->
+        <input type="submit" value="Place Order">
+    </form> 
+
+    <h1>ORDER SUMMARY</h1>
+    <p id="receipt"></p>
+
+    <!--3.)-->
+    <script>
+        function printReceipt () {
+            var name = document.getElementById("name").value;
+            var section = document.getElementById("sec").value;
+            var order = document.getElementById("meal").value;
+            var quantity = document.getElementById("quantity").value;
+
+            receipt.innerHTML = "Name: " + name + "<br>Grade & Section: " + section + "<br>Order: " + order + "<br>Subtotal: PHP " + calculateSubtotal(order, quantity);
+
+            return false;
+        }
+
+        function calculateSubtotal (x, y) {
+            var order = x;
+            var quantity = y;
+
+            switch (order) {
+                case "chknmeal":
+                    console.log("idk if ill finish this in time");
+                    break;
+                default:
+                    console.log("bruh");
+            }
+
+            return;
+        }
+    </script>
+</body>
+</html>
