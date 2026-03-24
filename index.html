@@ -6,62 +6,107 @@
     <title>Document</title>
 </head>
 <body>
-    
-    <!--very unfinished, apolocheese-->
+    <div>
+        <h1>Lunch Pre-Order Form</h1>
 
-    <h1>ORDER FORM</h1>
+        <!-- 1.) Form -->
+        <form onsubmit="return printReceipt()">
+            <!-- a-->
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name"><br>
 
-    <!--1.)-->
-    <form onsubmit="return printReceipt()"> <!--2.)-->
-        <!--a-->
-        <label for="name">Full Name:</label><br>
-        <input type="text" id="name" name="name"><br><br>
+            <!--b-->
+            <label for="section">Grade & Section:</label>
+            <input type="text" id="section" name="section"><br><br>
 
-        <!--b-->
-        <label for="sec">Grade & Section [ex. 9-Barium]:</label><br>
-        <input type="text" id="sec" name="sec"><br><br>
+            <!-- c-->
+            <label for="meal">Select Meal:</label>
+            <select id="meal" name="meal">
+                <option value="Chicken meal">Chicken meal (PHP 75)</option>
+                <option value="Pork meal">Pork meal (PHP 85)</option>
+                <option value="Beef meal">Beef meal (PHP 105)</option>
+            </select><br>
 
-        <!--c-->
-        <label for="meal">Meal:</label><br>
-        <select name="meal" id="meal">
-            <option value="chknmeal">Chicken Meal (PHP 75)</option>
-            <option value="porkmeal">Pork Meal (PHP 85)</option>
-            <option value="beefmeal">Beef Meal (PHP 105)</option>
-        </select><br><br>
+            <!--d-->
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1"><br><br>
 
-        <!--f-->
-        <input type="submit" value="Place Order">
-    </form> 
+            <!--e-->
+            <label for="clientType">Customer Type:</label>
+            <select id="clientType" name="clientType">
+                <option value="Student">Student</option>
+                <option value="Faculty/Staff">Faculty/Staff</option>
+            </select><br><br>
 
-    <h1>ORDER SUMMARY</h1>
-    <p id="receipt"></p>
+            <!--f-->
+            <input type="submit" value="Place Order">
+        </form>
+
+        <!-- Order Summary -->
+        <h1>Order Summary</h1>
+        <div id="receipt"></div>
+    </div>
 
     <!--3.)-->
     <script>
-        function printReceipt () {
-            var name = document.getElementById("name").value;
-            var section = document.getElementById("sec").value;
-            var order = document.getElementById("meal").value;
-            var quantity = document.getElementById("quantity").value;
-
-            receipt.innerHTML = "Name: " + name + "<br>Grade & Section: " + section + "<br>Order: " + order + "<br>Subtotal: PHP " + calculateSubtotal(order, quantity);
-
-            return false;
-        }
-
-        function calculateSubtotal (x, y) {
-            var order = x;
-            var quantity = y;
+        function calculateSubtotal(order, quantity) {
+            var price = 0;
 
             switch (order) {
-                case "chknmeal":
-                    console.log("idk if ill finish this in time");
+                case "Chicken meal":
+                    price = 75;
+                    break;
+                case "Pork meal":
+                    price = 85;
+                    break;
+                case "Beef meal":
+                    price = 105;
                     break;
                 default:
-                    console.log("bruh");
+                    return "Item not found";
             }
 
-            return;
+            return price * quantity;
+        }
+
+        function calculateDiscount(total, custType) {
+            if (custType === "Student") {
+                return total * 0.20; // 20% discount for students
+            }
+            return 0; // no discount for faculty and staff
+        }
+
+        function printReceipt() {
+            var name = document.getElementById("name").value || "N/A";
+            var section = document.getElementById("section").value || "N/A";
+            var meal = document.getElementById("meal").value || "N/A";
+            var quantity = document.getElementById("quantity").value || 0;
+            var clientType = document.getElementById("clientType").value || "N/A";
+
+            var subtotal = calculateSubtotal(meal, quantity); // subtotal
+            var discount = calculateDiscount(subtotal, clientType); // discount
+            var total = subtotal - discount; // total
+
+            // meal stuff for the receipt
+            var mealDisplay = "";
+            switch (meal) {
+                case "Chicken meal":
+                    mealDisplay = "Chicken meal (PHP 75)";
+                    break;
+                case "Pork meal":
+                    mealDisplay = "Pork meal (PHP 85)";
+                    break;
+                case "Beef meal":
+                    mealDisplay = "Beef meal (PHP 105)";
+                    break;                default:
+                    mealDisplay = meal;            }
+
+            // receipt stuff
+            var receiptHTML = "Name: " + name + "<br>Grade & Section: " + section + "<br>Item: " + mealDisplay + "<br>Quantity: " + quantity + "<br>Subtotal: PHP " + subtotal.toFixed(2) + "<br>Discount: -PHP " + discount.toFixed(2) + "<br>Total: PHP " + total.toFixed(2);
+
+            document.getElementById("receipt").innerHTML = receiptHTML;
+
+            return false;
         }
     </script>
 </body>
